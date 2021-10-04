@@ -50,6 +50,15 @@ RSpec.describe IcalFilterProxy do
       expect(filter_rule.operator).to eq('equals')
       expect(filter_rule.values).to eq('09:00')
     end
+
+    it 'adds alarms to the Calendar object' do
+      alarm = calendars['rota'].alarms.first
+
+      expect(alarm).to be_a(IcalFilterProxy::Alarm)
+      expect(alarm.options[:action]).to eq('DISPLAY')
+      expect(alarm.options[:summary]).to eq('Alarm notification')
+      expect(alarm.options[:trigger]).to eq('-PT30M')
+    end
   end
 
   def example_config
@@ -59,6 +68,9 @@ RSpec.describe IcalFilterProxy do
         'api_key' => 'abc12',
         'rules' => [
           { 'field' => 'start_time', 'operator' => 'equals', 'val' => '09:00' }
+        ],
+        'alarms' => [
+          { 'action' => 'DISPLAY', 'summary' => 'Alarm notification', 'trigger' => '-PT30M' }
         ]
       }
     }

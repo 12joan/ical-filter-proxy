@@ -5,3 +5,7 @@ rota:
     - field: start_time
       operator: equals
       val: '09:00'
+  alarms:
+    - action: DISPLAY
+      summary: Alarm notification
+      trigger: -PT30M

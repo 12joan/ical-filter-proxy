@@ -53,6 +53,13 @@ RSpec.describe IcalFilterProxy::Calendar do
         filtered_ical = cal.filtered_calendar
         expect(filtered_ical).to eq(filtered_calendar)
       end
+
+      it 'outputs a fresh calendar with the given alarms added to each event' do
+        cal.add_alarm(action: 'DISPLAY', summary: 'Alarm notification', trigger: '-PT30M')
+
+        filtered_ical = cal.filtered_calendar
+        expect(filtered_ical).to eq(calendar_with_alarms)
+      end
     end
   end
 
@@ -64,5 +71,9 @@ RSpec.describe IcalFilterProxy::Calendar do
 
   def filtered_calendar
     File.read(File.expand_path('../fixtures/filtered_calendar.ics', __FILE__))
+  end
+
+  def calendar_with_alarms
+    File.read(File.expand_path('../fixtures/calendar_with_alarms.ics', __FILE__))
   end
 end

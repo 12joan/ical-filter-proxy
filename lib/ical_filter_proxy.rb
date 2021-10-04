@@ -10,14 +10,19 @@ require 'forwardable'
 require_relative 'ical_filter_proxy/calendar'
 require_relative 'ical_filter_proxy/filter_rule'
 require_relative 'ical_filter_proxy/filterable_event_adapter'
+require_relative 'ical_filter_proxy/alarm'
 
 module IcalFilterProxy
   def self.calendars
     config.transform_values do |calendar_config|
       calendar = Calendar.new(calendar_config['ical_url'], calendar_config['api_key'], calendar_config['timezone'])
 
-      calendar_config['rules'].each do |rule|
+      calendar_config.fetch('rules', []).each do |rule|
         calendar.add_rule(rule['field'], rule['operator'], rule['val'])
+      end
+
+      calendar_config.fetch('alarms', []).each do |alarm_options|
+        calendar.add_alarm(alarm_options.transform_keys(&:to_sym))
       end
 
       calendar
