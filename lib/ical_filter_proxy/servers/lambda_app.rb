@@ -1,21 +1,21 @@
 module IcalFilterProxy
   module Servers
     class LambdaApp
-      attr_accessor :filters
+      attr_accessor :calendars
 
-      def initialize(filters)
-        self.filters = filters
+      def initialize(calendars)
+        self.calendars = calendars
       end
 
       def call(event)
         return render_not_found unless event['queryStringParameters']
 
         calendar_name = event['queryStringParameters']['calendar']
-        ical_filter = filters[calendar_name]
+        calendar = calendars[calendar_name]
 
-        if ical_filter
-          if event['queryStringParameters']['key'] == ical_filter.api_key
-            render_calendar(ical_filter)
+        if calendar
+          if event['queryStringParameters']['key'] == calendar.api_key
+            render_calendar(calendar)
           else
             render_forbidden
           end
