@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - run: cp config.yml{.example,}
       - run: docker compose -f docker-compose.production.yml up -d --build --wait
       - run: curl -Is http://localhost:3000/healthcheck
 
