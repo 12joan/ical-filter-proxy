@@ -1,10 +1,14 @@
-FROM ruby:2.5-slim
+FROM ruby:4.0.2-alpine
 
+RUN apk add build-base curl
 RUN bundle config --global frozen 1
+RUN bundle config --global without 'development test'
 WORKDIR /app
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 COPY . .
 
-EXPOSE 8000
-CMD ["/usr/local/bin/bundle", "exec", "rackup", "--host=0.0.0.0", "--port=8000"]
+EXPOSE 3000
+CMD ["/usr/local/bin/bundle", "exec", "rackup", "--host=0.0.0.0", "--port=3000"]
+HEALTHCHECK --start-period=1s --start-interval=1s \
+  CMD curl -f http://localhost:3000/healthcheck || exit 1

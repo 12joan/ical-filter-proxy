@@ -15,7 +15,7 @@ require_relative 'ical_filter_proxy/alarm'
 module IcalFilterProxy
   def self.calendars
     config.transform_values do |calendar_config|
-      calendar = Calendar.new(calendar_config['ical_url'], calendar_config['api_key'], calendar_config['timezone'])
+      calendar = Calendar.new(calendar_config['ical_url'], calendar_config['api_key'])
 
       calendar_config.fetch('rules', []).each do |rule|
         calendar.add_rule(rule['field'], rule['operator'], rule['val'])

@@ -8,7 +8,7 @@ module IcalFilterProxy
 
     def initialize(raw_event, options = {})
       @raw_event = raw_event
-      @options = { timezone: 'UTC' }.merge(options)
+      @options = options
     end
 
     # Wraps a DateTime and exposes filterable parts of that time stamp. Avoids writing methods for every dtstart and
@@ -19,8 +19,8 @@ module IcalFilterProxy
 
       attr_reader :timestamp
 
-      def initialize(timestamp, timezone)
-        @timestamp = timestamp.in_time_zone(timezone)
+      def initialize(timestamp)
+        @timestamp = timestamp
       end
 
       # @return [String] time component only in the format "HH:MM"
@@ -36,12 +36,12 @@ module IcalFilterProxy
 
     # @private We need to use send from method_missing to obtain this, so we can't use private, but this isn't for you
     def start_components
-      @start_components ||= DateComponents.new(dtstart, options[:timezone])
+      @start_components ||= DateComponents.new(dtstart)
     end
 
     # @private We need to use send from method_missing to obtain this, so we can't use private, but this isn't for you
     def end_components
-      @end_components ||= DateComponents.new(dtend, options[:timezone])
+      @end_components ||= DateComponents.new(dtend)
     end
 
     def method_missing(method_sym, *args, &block)

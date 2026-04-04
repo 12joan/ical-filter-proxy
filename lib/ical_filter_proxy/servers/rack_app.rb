@@ -10,17 +10,21 @@ module IcalFilterProxy
       def call(env)
         request = Rack::Request.new(env)
 
+        if request.path_info == '/healthcheck'
+          return [200, { 'content-type' => 'text/plain' }, ['OK']]
+        end
+
         requested_calendar = request.path_info.sub(/^\//, '')
         calendar = calendars[requested_calendar]
 
         if calendar
           if request.params['key'] == calendar.api_key
-            [200, { 'Content-Type' => 'text/calendar' }, [calendar.filtered_calendar]]
+            [200, { 'content-type' => 'text/calendar' }, [calendar.filtered_calendar]]
           else
-            [403, { 'Content-Type' => 'text/plain' }, ['Authentication Incorrect']]
+            [403, { 'content-type' => 'text/plain' }, ['Authentication Incorrect']]
           end
         else
-          [404, { 'Content-Type' => 'text/plain' }, ['Calendar not found']]
+          [404, { 'content-type' => 'text/plain' }, ['Calendar not found']]
         end
       end
     end

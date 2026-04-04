@@ -14,17 +14,6 @@ RSpec.describe IcalFilterProxy::Calendar do
       expect(cal.api_key).to eq(api_key)
     end
 
-    it 'sets UTC as the default timezone' do
-      expect(cal.timezone).to eq('UTC')
-    end
-
-    it 'optionally accepts a timezone as its third arg' do
-      tz = 'Europe/London'
-      cal = described_class.new(url, api_key, tz)
-
-      expect(cal.timezone).to eq(tz)
-    end
-
     it 'starts with an empty array of filter rules' do
       expect(cal.filter_rules.length).to eq(0)
     end
