@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'icalendar', '~> 2.12'
 gem 'rack', '~> 3.2', require: false
 gem 'rackup', '~> 2.3', require: false
-gem 'puma', '~> 7.2', require: false
+gem 'puma', '~> 8.0', require: false
 
 group :development, :test do
   gem 'rspec', '~> 3.13', require: false
